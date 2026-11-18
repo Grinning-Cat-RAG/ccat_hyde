@@ -1,4 +1,3 @@
-from langchain_classic.chains.llm import LLMChain
 from langchain_core.prompts import PromptTemplate
 
 from cat import log, hook, RecallSettings, UserMessage
@@ -22,15 +21,16 @@ async def before_cat_reads_message(user_message: UserMessage, cat):
     )
 
     # Run a LLM chain with the user message as input
-    hypothesis_chain = LLMChain(prompt=hypothesis_prompt, llm=cat.large_language_model)
-    answer = hypothesis_chain(user_message.text)
-    
+    hypothesis_chain = hypothesis_prompt | cat.large_language_model
+    message = await hypothesis_chain.ainvoke({"input": user_message.text})
+    text = message.content if hasattr(message, "content") else str(message)
+
     # Save HyDE answer in working memory
-    cat.working_memory[HYDE_ANSWER] = answer["text"]
-    
+    cat.working_memory[HYDE_ANSWER] = text
+
     log.debug("------------- HYDE -------------")
     log.debug(f"user message: {user_message.text}")
-    log.debug(f"hyde answer: {answer['text']}")
+    log.debug(f"hyde answer: {text}")
     
     return user_message
 

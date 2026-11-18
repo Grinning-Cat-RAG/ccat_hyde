@@ -6,5 +6,6 @@
     "author_url": "",
     "plugin_url": "https://github.com/Furrmidable-Crew/ccat_hyde",
     "tags": "hyde, llm, cheshire-cat, embedding",
+    "dependencies": [],
     "thumb": "https://raw.githubusercontent.com/Furrmidable-Crew/ccat_hyde/main/logo.png"
 }
